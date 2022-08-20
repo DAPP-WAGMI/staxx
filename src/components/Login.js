@@ -3,6 +3,7 @@ import { useLazyQuery, useMutation } from '@apollo/client'
 import { GET_CHALLENGE, AUTHENTICATION } from '../utils/queries'
 import Button from './Button'
 import { useWallet } from '../utils/wallet'
+import Lens from '../assets/Lens.svg'
 
 function Login({ ...props }) {
     const { wallet, authToken, setAuthToken } = useWallet()
@@ -68,7 +69,9 @@ function Login({ ...props }) {
     }, [])
 
     if(!wallet.address || authToken) return '';
-    return <Button onClick={handleClick} {...props}>Login to Lens</Button>;
+    return <button onClick={handleClick} {...props} class="widget-button widget-button-small" style={{ border: 'none' }}>
+      <img src={Lens}/>Sign in with Lens
+    </button>
 }
 
 export default Login

@@ -55,7 +55,7 @@ const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
       walletconnect: {
         package: WalletConnectProvider, // required
         options: {
-          infuraId: "INFURA_ID" // required
+          infuraId: "30a44e55236e4a81af8cceb9cb3afc64" // required
         }
       }
     };
@@ -75,7 +75,7 @@ const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
     //   throw new Error("Missing Infura Id");
     // }
     const web3Provider = new WalletConnectProvider({
-      infuraId: "26JsrucCKgQZxquUitySbZrwAFq",
+      infuraId: "30a44e55236e4a81af8cceb9cb3afc64",
     });
 
     // web3Provider.on("disconnect", reset);
@@ -136,7 +136,7 @@ const providerOptions = {
   walletconnect: {
     package: WalletConnectProvider, // required
     options: {
-      infuraId: "INFURA_ID" // required
+      infuraId: "30a44e55236e4a81af8cceb9cb3afc64" // required
     }
   }
 };

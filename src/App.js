@@ -27,19 +27,6 @@ const Nav = styled.div`
     padding: 0.5em;
 `
 
-const BottomNav = styled.div`
-    position: fixed;
-    bottom: 0;
-    height: 3em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: ${p=>p.theme.lightBackground};
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 0 3em;
-`
-
 function App() {
     const { setAuthToken } = useWallet()
     const [profile, setProfile] = useState({})
@@ -52,7 +39,7 @@ function App() {
                         <Wallet setProfile={setProfile} profile={profile}/>
                     </Nav>
                     <Routes>
-                        <Route path="/" element={<Container><Home/></Container>}/>
+                        <Route path="/" element={<Container><Home profile={profile} /></Container>}/>
                     </Routes>
                 </ThemeProvider>
             </ApolloProvider>

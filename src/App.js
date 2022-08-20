@@ -8,6 +8,7 @@ import { useWallet } from "./utils/wallet";
 import GlobalStyle from "./theme/GlobalStyle";
 import ThemeProvider from "./theme/ThemeProvider";
 import Home from "./pages/Home";
+import Wallet from "./components/Wallet";
 
 const Container = styled(Card)`
     max-width: 500px;
@@ -48,7 +49,7 @@ function App() {
                 <ThemeProvider>
                     <GlobalStyle />
                     <Nav>
-                        {/* <Wallet setProfile={setProfile} profile={profile}/> */}
+                        <Wallet setProfile={setProfile} profile={profile}/>
                     </Nav>
                     <Routes>
                         <Route path="/" element={<Container><Home/></Container>}/>

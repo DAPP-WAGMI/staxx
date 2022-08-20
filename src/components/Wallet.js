@@ -13,7 +13,6 @@ function Wallet({ setProfile = () => {}, ...props }) {
 const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
   const [getProfiles, profiles] = useLazyQuery(GET_PROFILES)
 
-  
   async function connect() {
     
     const providerOptions = {
@@ -51,6 +50,10 @@ const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
 
     setProvider(provider);
     const address = await signer.getAddress()
+
+    const contractAddr = '0x60Ae865ee4C725cd04353b5AAb364553f56ceF82';
+    const contract = new ethers.Contract(contractAddr, LensHub, signer)
+    setLensHub(contract)
 
     setWallet({...wallet, signer, address})
   }

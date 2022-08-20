@@ -20,26 +20,23 @@ const client = create({
 
 function Compose({ profileId, ...props }) {
     // const { wallet, provider } = useWallet()
-    const [selectedFile, setSelectedFile] = useState({})
+    // const [selectedFile, setSelectedFile] = useState({})
     const [mutatePostTypedData, typedPostData] = useMutation(CREATE_POST_TYPED_DATA)
 
     const handleClick = async () => {
-        console.log('upload')
-        console.log(selectedFile)
-        const media = await client.add(selectedFile)
-        console.log(media)
+        console.log('post board, profileid:', profileId)
 
         const description = 'topic'
 
         const metadata = {
-            name: `post by ${profileId}`,
+            name: `board by ${profileId}`,
             description,
             content: description,
             external_url: null,
             image: null,
             imageMimeType: null,
             version: "1.0.0",
-            appId: 'iris',
+            appId: 'staxx',
             attributes: [],
             media: [],
             metadata_id: uuidv4(),
@@ -72,18 +69,13 @@ function Compose({ profileId, ...props }) {
 
 
     }
-
-    const onFileChange = (e) => {
-        // console.log(e.target.files[0])
-        setSelectedFile(e.target.files[0])
-    }
     
     return <>
-
         <div> 
-            <input type="file" onChange={onFileChange} /> 
+            <input type="text"/>
+            <br/>
             <Button onClick={handleClick}>
-                Create Board
+                Create Staxx
             </Button>
         </div> 
     </>

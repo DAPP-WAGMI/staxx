@@ -400,53 +400,6 @@ ${CommentFields}
 ${CommentMirrorOfFields}
 `;
 
-export const SEARCH = gql`
-  query($request: SearchQueryRequest!) {
-    search(request: $request) {
-      ... on PublicationSearchResult {
-      __typename 
-      items {
-        __typename 
-        ... on Comment {
-          ...CommentFields
-        }
-        ... on Post {
-          ...PostFields
-        }
-      }
-      pageInfo {
-        prev
-        totalCount
-        next
-      }
-    }
-    ... on ProfileSearchResult {
-      __typename 
-      items {
-        ... on Profile {
-          ...ProfileFields
-        }
-      }
-      pageInfo {
-        prev
-        totalCount
-        next
-      }
-    }
-    }
-  }
-  ${MediaFields}
-  ${MirrorBaseFields}
-  ${ProfileFields}
-  ${PublicationStatsFields}
-  ${MetadataOutputFields}
-  ${Erc20Fields}
-  ${CollectModuleFields}
-  ${PostFields}
-  ${CommentFields}
-  ${CommentMirrorOfFields}
-`;
-
 export const GET_TIMELINE = gql`
 query(
   $request: TimelineRequest!
@@ -1025,3 +978,38 @@ export const REMOVE_REACTION_MUTATION = gql`
     removeReaction(request: $request)
   }
 `
+
+export const SEARCH = gql`
+  query SearchPublications(
+    $request: SearchQueryRequest!
+    $reactionRequest: ReactionFieldResolverRequest
+  ) {
+    search(request: $request) {
+      ... on PublicationSearchResult {
+        items {
+          ... on Post {
+            ...PostFields
+          }
+          ... on Comment {
+            ...CommentFields
+          }
+        }
+        pageInfo {
+          next
+          totalCount
+        }
+      }
+    }
+  }
+  ${MediaFields}
+  ${MirrorBaseFields}
+  ${ProfileFields}
+  ${PublicationStatsFields}
+  ${MetadataOutputFields}
+  ${Erc20Fields}
+  ${CollectModuleFields}
+  ${PostFields}
+  ${CommentFields}
+  ${CommentBaseFields}
+  ${CommentMirrorOfFields}
+`;

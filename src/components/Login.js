@@ -69,7 +69,7 @@ function Login({ ...props }) {
     }, [])
 
     if(!wallet.address || authToken) return '';
-    return <button onClick={handleClick} {...props} class="widget-button widget-button-small" style={{ border: 'none' }}>
+    return <button onClick={handleClick} {...props} className="widget-button widget-button-small" style={{ border: 'none' }}>
       <img src={Lens}/>Sign in with Lens
     </button>
 }

@@ -9,7 +9,7 @@ import LensHub from '../abi/LensHub.json'
 import { useWallet } from '../utils/wallet'
 import Login from './Login'
 
-function Wallet({ setProfiles = () => {}, ...props }) {
+function Wallet({ setProfile = () => {}, ...props }) {
 const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
   const [getProfiles, profiles] = useLazyQuery(GET_PROFILES)
 
@@ -73,9 +73,9 @@ const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
 
   useEffect(() => {
     if (!profiles.data) return
-    console.log(profiles.data.profiles.items)
+    console.log(profiles.data.profiles.items[0])
 
-    setProfiles(profiles.data.profiles.items)
+    setProfile(profiles.data.profiles.items[0])
 
   }, [profiles.data])
 

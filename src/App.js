@@ -8,7 +8,9 @@ import { useWallet } from "./utils/wallet";
 import GlobalStyle from "./theme/GlobalStyle";
 import ThemeProvider from "./theme/ThemeProvider";
 import Home from "./pages/Home";
+import NewBoard from "./pages/NewBoard";
 import Wallet from "./components/Wallet";
+import Button from "./components/Button";
 
 const Container = styled(Card)`
     max-width: 500px;
@@ -27,19 +29,6 @@ const Nav = styled.div`
     padding: 0.5em;
 `
 
-const BottomNav = styled.div`
-    position: fixed;
-    bottom: 0;
-    height: 3em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: ${p=>p.theme.lightBackground};
-    width: 100vw;
-    box-sizing: border-box;
-    padding: 0 3em;
-`
-
 function App() {
     const { setAuthToken } = useWallet()
     const [profile, setProfile] = useState({})
@@ -50,9 +39,11 @@ function App() {
                     <GlobalStyle />
                     <Nav>
                         <Wallet setProfile={setProfile} profile={profile}/>
+                        <Button onClick="">Logout</Button>
                     </Nav>
                     <Routes>
-                        <Route path="/" element={<Container><Home/></Container>}/>
+                        <Route path="/new" element={<Container><NewBoard profile={profile} /></Container>}/>
+                        <Route path="/" element={<Container><Home profile={profile} /></Container>}/>
                     </Routes>
                 </ThemeProvider>
             </ApolloProvider>

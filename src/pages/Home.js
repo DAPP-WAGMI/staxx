@@ -5,10 +5,39 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Curate from '../components/Curate'
 import Compose from '../components/Compose'
+import Button from '../components/Button'
 import { GET_TIMELINE, SEARCH } from '../utils/queries'
+
 
 const Container = styled.div`
     border-radius: 8px;`
+
+
+    
+
+const StaxxPreview = styled.div`
+    background: green;
+    border-radius: .5em;
+    margin-top: 5%;
+    padding: .5%
+    width: 100%
+    height: 80em;
+    // display: flex;
+    
+);
+
+const element = <h1>Hello, world</h1>;
+    height: 10em;
+    widht: 10em;
+    border: black 1px;
+    border-radius: .5em;
+`
+
+const InnerBox = styled.div`
+
+const StyledImage = styled.img`
+
+`
 
 function Home({ profile, ...props }) {
     const { wallet, provider } = useWallet()
@@ -56,7 +85,7 @@ function Home({ profile, ...props }) {
     }, [searchData.data]);
     
     return <Container>
-        hey
+        
         <Curate/>
         <Compose profileId={profile.id} />
         {
@@ -66,6 +95,12 @@ function Home({ profile, ...props }) {
                     return <p key={pub.id}>{pub.__typename}</p>
             })
         }
+        <StaxxPreview>
+            <Button>Saves</Button>
+            <InnerBox class="staxxboxx">box 1</InnerBox>
+            <InnerBox class="staxxboxx">box 2</InnerBox>
+          
+        </StaxxPreview>
     </Container>
 }
 

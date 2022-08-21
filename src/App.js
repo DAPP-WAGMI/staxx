@@ -9,6 +9,8 @@ import GlobalStyle from "./theme/GlobalStyle";
 import ThemeProvider from "./theme/ThemeProvider";
 import Home from "./pages/Home";
 import NewBoard from "./pages/NewBoard";
+import Outlet from "./pages/Outlet";
+import Post from "./pages/Post";
 import Wallet from "./components/Wallet";
 import Button from "./components/Button";
 
@@ -45,8 +47,11 @@ function App() {
                         <Button onClick="">Logout</Button>
                     </Nav>
                     <Routes>
-                        <Route path="/new" element={<Container><NewBoard profile={profile} /></Container>}/>
                         <Route path="/" element={<Container><Home profile={profile} /></Container>}/>
+                        <Route path="board" element={<Outlet/>}>
+                            <Route path=":postId" element={<Container><Post /></Container>} />
+                        </Route>
+                        <Route path="new" element={<Container><NewBoard profile={profile} /></Container>}/>
                     </Routes>
                 </ThemeProvider>
             </ApolloProvider>

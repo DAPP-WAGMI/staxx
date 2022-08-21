@@ -150,7 +150,6 @@ function Compose({ profileId, ...props }) {
     
     return <>
         <div> 
-            <h2>New Staxx</h2>
             <input type="text" onChange={handleChange}/>
             <br/>
             <Button onClick={handleClick}>

@@ -8,13 +8,16 @@ import Compose from '../components/Compose'
 import { RoundedButton } from '../components/Button'
 import Card from '../components/Card'
 import { GET_TIMELINE, SEARCH } from '../utils/queries'
+import Gradient from '../assets/gradient.png'
 
 
 const Container = styled.div`
     border-radius: 8px;`
 
 const StaxxPreview = styled(Card)`
-    background: #1642AA;
+    color: white;
+    background: url(${Gradient});
+    background-size: cover;
     margin-bottom: 1.8em;
     span {
         font-weight: 600;
@@ -87,14 +90,16 @@ function Home({ profile, ...props }) {
             publications
                 // .filter(pub => pub.collectedBy)
                 .map(pub => {
-                    return <StaxxPreview key={pub.id}>
-                        <span>{pub.metadata.content?.replace('#staxx', '')}</span>
-                        {pub.profile.handle}
-                        <Buttons>
-                            <RoundedButton>save</RoundedButton>
-                            <RoundedButton>reply</RoundedButton>
-                        </Buttons>
-                    </StaxxPreview>
+                    return <Link key={pub.id} to={`/board/${pub.id}`}>
+                        <StaxxPreview>
+                            <span>{pub.metadata.content?.replace('#staxx', '')}</span>
+                            {pub.profile.handle}
+                            <Buttons>
+                                <RoundedButton>save</RoundedButton>
+                                <RoundedButton>reply</RoundedButton>
+                            </Buttons>
+                        </StaxxPreview>
+                    </Link>
             })
         }
     </Container>

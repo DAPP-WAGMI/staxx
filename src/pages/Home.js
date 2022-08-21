@@ -11,6 +11,14 @@ import { RoundedButton } from '../components/Button'
 import Card from '../components/Card'
 import { CREATE_COLLECT_TYPED_DATA, SEARCH, GET_TIMELINE, GET_PUBLICATIONS } from '../utils/queries'
 import Gradient from '../assets/gradient.png'
+import Lilens from '../assets/lilens.png'
+
+
+const Span = styled.p`
+    color: #bdbdbd;
+    font-size: 0.8em;
+    padding-bottom: 0.4em;
+`
 
 const Container = styled.div`
     border-radius: 8px;`
@@ -20,7 +28,7 @@ const StaxxPreview = styled(Card)`
     background: url(${Gradient});
     background-size: cover;
     background-attachment: fixed;
-    margin-bottom: 2.4em;
+    margin-bottom: 2em;
     span {
         font-weight: 600;
         font-size: 1.22em;
@@ -136,6 +144,10 @@ export const Staxx = ({ pub }) => {
     }, [createCollectTypedData.data]);
 
     return <div style={{ position: 'relative' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4em', marginLeft: '2px', marginBottom: '0.2em' }}>
+        <img src={Lilens} height="24px" style={{ marginBottom: '6px' }}/>
+        <Span>{pub.profile.handle} created a Staxx</Span>
+    </div>
     <Link to={`/board/${pub.id}`}>
         <StaxxPreview>
             <span>{pub.metadata.content?.replace('#staxx', '')}</span>

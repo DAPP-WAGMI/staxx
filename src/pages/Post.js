@@ -87,7 +87,6 @@ function Post({ profileId, profileName }) {
 
 
     return <>
-        {/* { params.postId } */}
         <StyledCard>
             <h2>{publication.metadata && publication.metadata.content.replace('#staxx','')}</h2>
             <div style={{ display: 'flex', alignItems: 'center' }}>

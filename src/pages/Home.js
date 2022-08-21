@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '../utils/wallet'
-import { useLazyQuery } from '@apollo/client'
+import { useLazyQuery, useMutation } from '@apollo/client'
+import { utils } from 'ethers'
+import omitDeep from 'omit-deep'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Curate from '../components/Curate'
 import Compose from '../components/Compose'
 import { RoundedButton } from '../components/Button'
 import Card from '../components/Card'
-import { GET_TIMELINE, SEARCH, GET_PUBLICATIONS } from '../utils/queries'
+import { CREATE_COLLECT_TYPED_DATA, SEARCH, GET_TIMELINE, GET_PUBLICATIONS } from '../utils/queries'
 import Gradient from '../assets/gradient.png'
 
 const Container = styled.div`
@@ -42,15 +44,17 @@ const InnerBox = styled.div``
 
 const Buttons = styled.div`
     position: absolute;
-    right: 2em;
-    margin-top: 0.5em;
+    bottom: -1em;
+    right: 1em;
     display: flex;
     gap: 0.6em;
 `
 
 export const Staxx = ({ pub }) => {
+    const { wallet, lensHub } = useWallet()
     const [comments, setComments] = useState([])
     const [getPublications, publicationsData] = useLazyQuery(GET_PUBLICATIONS)
+    const [createCollectTyped, createCollectTypedData] = useMutation(CREATE_COLLECT_TYPED_DATA)
 
     useEffect(() => {
         getPublications({
@@ -69,20 +73,86 @@ export const Staxx = ({ pub }) => {
 
     }, [publicationsData.data]);
 
-    return <StaxxPreview>
-        <span>{pub.metadata.content?.replace('#staxx', '')}</span>
-        <Link to="profile" style={{ color: 'white' }}>{pub.profile.handle} ✦</Link>
-        <Scrollarea>
-        {comments.map((post) => {
-                const src = post.metadata.media[0].original?.url?.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')
-                return <StyledImg src={src} key={post.id} />;
-            })}
-        </Scrollarea>
-        <Buttons>
-            <RoundedButton>save</RoundedButton>
-            <RoundedButton>reply</RoundedButton>
-        </Buttons>
-    </StaxxPreview>
+    const handleSave = async (e) => {
+        e.stopPropagation()
+
+        const collectReq = {
+            publicationId: pub.id,
+        };
+
+        try {
+            await createCollectTyped({
+                variables: {
+                    request: collectReq,
+                },
+            });
+        }
+        catch (err) {
+            alert(err)
+            // setApiError(apiError)
+        }
+    }
+    useEffect(() => {
+        if (!createCollectTypedData.data) return;
+
+        const handleCreate = async () => {
+
+            const typedData = createCollectTypedData.data.createCollectTypedData.typedData;
+
+            const { domain, types, value } = typedData;
+
+            const signature = await wallet.signer._signTypedData(
+                omitDeep(domain, "__typename"),
+                omitDeep(types, "__typename"),
+                omitDeep(value, "__typename")
+            );
+
+
+            const { v, r, s } = utils.splitSignature(signature);
+
+            const tx = await lensHub.collectWithSig({
+                collector: wallet.address,
+                profileId: typedData.value.profileId,
+                pubId: typedData.value.pubId,
+                data: typedData.value.data,
+                sig: {
+                  v,
+                  r,
+                  s,
+                  deadline: typedData.value.deadline,
+                },
+              },
+              { gasLimit: 1000000 }
+              );
+            
+            console.log('collect: tx hash', tx.hash);
+            // await pollUntilIndexed(tx.hash)
+            // console.log('collect: success')
+            // setToastMsg({ type: 'success', msg: 'Transaction indexed' })
+
+        }
+        handleCreate();
+
+    }, [createCollectTypedData.data]);
+
+    return <div style={{ position: 'relative' }}>
+    <Link to={`/board/${pub.id}`}>
+        <StaxxPreview>
+            <span>{pub.metadata.content?.replace('#staxx', '')}</span>
+            <Link to="profile" style={{ color: 'white' }}>{pub.profile.handle} ✦</Link>
+            <Scrollarea>
+            {comments.map((post) => {
+                    const src = post.metadata.media[0].original?.url?.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')
+                    return <StyledImg src={src} key={post.id} />;
+                })}
+            </Scrollarea>
+        </StaxxPreview>
+    </Link>
+    <Buttons>
+        <RoundedButton onClick={handleSave}>save</RoundedButton>
+        <RoundedButton>reply</RoundedButton>
+    </Buttons>
+    </div>
 }
 
 function Home({ profile, ...props }) {
@@ -135,9 +205,7 @@ function Home({ profile, ...props }) {
             publications
                 // .filter(pub => pub.collectedBy)
                 .map(pub => {
-                    return <Link key={pub.id} to={`/board/${pub.id}`}>
-                        <Staxx pub={pub}/>
-                    </Link>
+                    return <Staxx key={pub.id} pub={pub}/>
             })
         }
     </Container>

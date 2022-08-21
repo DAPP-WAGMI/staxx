@@ -23,17 +23,19 @@ const client = create({
 function Compose({ profileId, ...props }) {
     const { wallet, provider, lensHub } = useWallet()
     // const [selectedFile, setSelectedFile] = useState({})
+    const [name, setName] = useState('')
     const [mutatePostTypedData, typedPostData] = useMutation(CREATE_POST_TYPED_DATA)
     const [broadcast, broadcastData] = useMutation(BROADCAST)
 
     const handleClick = async () => {
         console.log('post board, profileid:', profileId)
+        if (!name) return;
 
         const metadata = {
             version: '2.0.0',
             metadata_id: uuidv4(),
-            description: 'description',
-            content: 'description',
+            description: `${name} #staxx`,
+            content: `${name} #staxx`,
             external_url: `https://staxxxxx.xyz/`,
             image: null,
             imageMimeType: null,
@@ -135,15 +137,21 @@ function Compose({ profileId, ...props }) {
 
             console.log(tx)
 
+            setName('')
+
         }
         if (typedPostData.data) processPost(typedPostData.data.createPostTypedData);
 
     }, [typedPostData.data])
+
+    const handleChange = (e) => {
+        setName(e.target.value)
+    }
     
     return <>
         <div> 
             <h2>New Staxx</h2>
-            <input type="text"/>
+            <input type="text" onChange={handleChange}/>
             <br/>
             <Button onClick={handleClick}>
                 Create Staxx

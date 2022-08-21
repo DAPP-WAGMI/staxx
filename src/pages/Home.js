@@ -5,38 +5,36 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import Curate from '../components/Curate'
 import Compose from '../components/Compose'
-import Button from '../components/Button'
+import { RoundedButton } from '../components/Button'
+import Card from '../components/Card'
 import { GET_TIMELINE, SEARCH } from '../utils/queries'
 
 
 const Container = styled.div`
     border-radius: 8px;`
 
-
-    
-
-const StaxxPreview = styled.div`
-    background: green;
-    border-radius: .5em;
-    margin-top: 5%;
-    padding: .5%
-    width: 100%
-    height: 80em;
-    // display: flex;
-    
-);
-
-const element = <h1>Hello, world</h1>;
-    height: 10em;
-    widht: 10em;
-    border: black 1px;
-    border-radius: .5em;
+const StaxxPreview = styled(Card)`
+    background: #1642AA;
+    margin-bottom: 1.8em;
+    span {
+        font-weight: 600;
+        font-size: 1.22em;
+    }
+    position: relative;
 `
-
-const InnerBox = styled.div`
+    
+const InnerBox = styled.div``
 
 const StyledImage = styled.img`
 
+`
+
+const Buttons = styled.div`
+    position: absolute;
+    right: 2em;
+    margin-top: 0.5em;
+    display: flex;
+    gap: 0.6em;
 `
 
 function Home({ profile, ...props }) {
@@ -85,22 +83,20 @@ function Home({ profile, ...props }) {
     }, [searchData.data]);
     
     return <Container>
-        
-        <Curate/>
-        <Compose profileId={profile.id} />
         {
             publications
                 // .filter(pub => pub.collectedBy)
                 .map(pub => {
-                    return <p key={pub.id}>{pub.__typename}</p>
+                    return <StaxxPreview key={pub.id}>
+                        <span>{pub.metadata.content?.replace('#staxx', '')}</span>
+                        {pub.profile.handle}
+                        <Buttons>
+                            <RoundedButton>save</RoundedButton>
+                            <RoundedButton>reply</RoundedButton>
+                        </Buttons>
+                    </StaxxPreview>
             })
         }
-        <StaxxPreview>
-            <Button>Saves</Button>
-            <InnerBox class="staxxboxx">box 1</InnerBox>
-            <InnerBox class="staxxboxx">box 2</InnerBox>
-          
-        </StaxxPreview>
     </Container>
 }
 

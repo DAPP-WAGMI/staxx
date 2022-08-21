@@ -12,16 +12,19 @@ import NewBoard from "./pages/NewBoard";
 import Wallet from "./components/Wallet";
 import Button from "./components/Button";
 
-const Container = styled(Card)`
-    max-width: 500px;
-    margin: auto;
-    margin-bottom: 4em;
-    @media (max-width: 768px) {
-      margin: 0.5em;
-      margin-bottom: 3.6em;
-      margin-top: 0em;
-    }
+const Container = styled.div`
+    padding: 1em;
 `
+// const Container = styled(Card)`
+//     max-width: 500px;
+//     margin: auto;
+//     margin-bottom: 4em;
+//     @media (max-width: 768px) {
+//       margin: 0.5em;
+//       margin-bottom: 3.6em;
+//       margin-top: 0em;
+//     }
+// `
 
 const Nav = styled.div`
     display: flex;

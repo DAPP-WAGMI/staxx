@@ -2,14 +2,13 @@ import styled from "styled-components";
 
 const Button = styled.button`
     margin-top: 0.5em;
-    border: none;
+    border: 1px solid white;
     border-radius: 6px;
     padding: 0.6em 2em;
     font-family: 'Fira Mono';
-    text-transform: uppercase;
     font-weight: 500;
     color: ${(p) => p.theme.textLight};
-    background: ${(p) => p.theme.primary};
+    background: none;
     letter-spacing: 0.02em;
     transition: all 100ms;
     :hover {
@@ -17,7 +16,7 @@ const Button = styled.button`
         cursor: pointer;
     }
     :focus {
-        box-shadow: 0px 2px 2px -1px rgba(0, 0, 0, 0.12), 0px 0px 0px 3px #9a3fcf;
+        box-shadow: 0px 2px 2px -1px rgba(0, 0, 0, 0.12), 0px 0px 0px 3px #333;
         outline: none;
     }
     :disabled {
@@ -41,7 +40,7 @@ export const RoundedButton = styled(Button)`
         background: #ffe8e8;
     }
     :focus {
-        box-shadow: 0px 2px 2px -1px rgba(0, 0, 0, 0.72), 0px 0px 0px 3px #D25D38;
+        box-shadow: 0px 2px 2px -1px rgba(0, 0, 0, 0.72), 0px 0px 0px 2px #eee;
         outline: none;
     }
 `;

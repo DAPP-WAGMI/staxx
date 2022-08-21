@@ -83,15 +83,15 @@ function Profile({ profile }) {
       <Container>
         <Img src={User} />
         <div>
-            <H1>Miaa</H1>
-            <P>@yo_mia.test</P>
+            <H1>Gaiaa</H1>
+            <P>@gaiaa.test</P>
         </div>
         <StyledRoundedButton>follow</StyledRoundedButton>
       </Container>
       <br/>
       {
             publications
-                .filter(pub => pub.profile.handle === 'yo_mia.test')
+                .filter(pub => pub.profile.handle === 'gaiaa.test')
                 .map(pub => {
                     // console.log(pub.profile.handle)
                     return <Link key={pub.id} to={`/board/${pub.id}`}>

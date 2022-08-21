@@ -79,7 +79,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Container><Home profile={profile} /></Container>}/>
                         <Route path="board" element={<Outlet/>}>
-                            <Route path=":postId" element={<Container><Post /></Container>} />
+                            <Route path=":postId" element={<Container><Post profileId={profile.id} /></Container>} />
                         </Route>
                         <Route path="new" element={<Container><NewBoard profile={profile} /></Container>}/>
                         <Route path="profile" element={<Container><Profile profile={profile} /></Container>}/>

@@ -37,8 +37,20 @@ const Nav = styled.div`
     padding: 0.5em;
 `
 
+const Pagelist = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-content: center;
+    gap: 1em;
+    padding: 0.5em;
+    a {
+        color: white;
+    }
+`
+
 function App() {
     const { setAuthToken } = useWallet()
+    const [showNav, setShowNav] = useState(false)
     const [profile, setProfile] = useState({})
 
     const handleLogout = () => {
@@ -53,12 +65,17 @@ function App() {
                     <GlobalStyle />
                     <Wallet setProfile={setProfile} profile={profile}/>
                     {profile.id && <Nav>
-                        <img height="40px" src={Logo}/>
+                        <img height="40px" src={Logo} onClick={() => setShowNav(!showNav)} />
                         <div>
                             {profile.handle}✦&nbsp;
                             <Button onClick={handleLogout}>Logout</Button>
                         </div>
                     </Nav>}
+                    {showNav && <Pagelist>
+                        <Link onClick={() => setShowNav(false)} to="profile">profile</Link>
+                        <Link onClick={() => setShowNav(false)} to="/">feed</Link>
+                        <Link onClick={() => setShowNav(false)} to="new">new</Link>
+                    </Pagelist>}
                     <Routes>
                         <Route path="/" element={<Container><Home profile={profile} /></Container>}/>
                         <Route path="board" element={<Outlet/>}>

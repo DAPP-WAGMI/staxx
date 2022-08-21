@@ -11,8 +11,10 @@ import Home from "./pages/Home";
 import NewBoard from "./pages/NewBoard";
 import Outlet from "./pages/Outlet";
 import Post from "./pages/Post";
+import Profile from "./pages/Profile";
 import Wallet from "./components/Wallet";
 import Button from "./components/Button";
+import Logo from './assets/logo.png'
 
 const Container = styled.div`
     padding: 1em;
@@ -30,7 +32,8 @@ const Container = styled.div`
 
 const Nav = styled.div`
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+    align-content: center;
     padding: 0.5em;
 `
 
@@ -49,15 +52,20 @@ function App() {
                 <ThemeProvider>
                     <GlobalStyle />
                     <Wallet setProfile={setProfile} profile={profile}/>
-                    <Nav>
-                        {profile.id && <Button onClick={handleLogout}>Logout</Button>}
-                    </Nav>
+                    {profile.id && <Nav>
+                        <img height="40px" src={Logo}/>
+                        <div>
+                            {profile.handle}✦&nbsp;
+                            <Button onClick={handleLogout}>Logout</Button>
+                        </div>
+                    </Nav>}
                     <Routes>
                         <Route path="/" element={<Container><Home profile={profile} /></Container>}/>
                         <Route path="board" element={<Outlet/>}>
                             <Route path=":postId" element={<Container><Post /></Container>} />
                         </Route>
                         <Route path="new" element={<Container><NewBoard profile={profile} /></Container>}/>
+                        <Route path="profile" element={<Container><Profile profile={profile} /></Container>}/>
                     </Routes>
                 </ThemeProvider>
             </ApolloProvider>

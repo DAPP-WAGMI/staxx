@@ -32,6 +32,7 @@ const StyledImg = styled.img`
 `
 
 const Scrollarea = styled.div`
+    margin-top: 0.6em;
     display: flex;
     gap: 0.9em;
     overflow: scroll;
@@ -47,7 +48,7 @@ const Buttons = styled.div`
     gap: 0.6em;
 `
 
-const Staxx = ({ pub }) => {
+export const Staxx = ({ pub }) => {
     const [comments, setComments] = useState([])
     const [getPublications, publicationsData] = useLazyQuery(GET_PUBLICATIONS)
 
@@ -70,9 +71,7 @@ const Staxx = ({ pub }) => {
 
     return <StaxxPreview>
         <span>{pub.metadata.content?.replace('#staxx', '')}</span>
-        {pub.profile.handle}
-        <br/>
-        <br/>
+        <Link to="profile" style={{ color: 'white' }}>{pub.profile.handle} ✦</Link>
         <Scrollarea>
         {comments.map((post) => {
                 const src = post.metadata.media[0].original?.url?.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')

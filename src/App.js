@@ -38,13 +38,19 @@ function App() {
     const { setAuthToken } = useWallet()
     const [profile, setProfile] = useState({})
 
+    const handleLogout = () => {
+        window.localStorage.clear()
+        window.sessionStorage.clear()
+        window.location.reload()
+    }
+
     return (
             <ApolloProvider>
                 <ThemeProvider>
                     <GlobalStyle />
+                    <Wallet setProfile={setProfile} profile={profile}/>
                     <Nav>
-                        <Wallet setProfile={setProfile} profile={profile}/>
-                        <Button onClick="">Logout</Button>
+                        {profile.id && <Button onClick={handleLogout}>Logout</Button>}
                     </Nav>
                     <Routes>
                         <Route path="/" element={<Container><Home profile={profile} /></Container>}/>

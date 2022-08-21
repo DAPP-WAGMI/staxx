@@ -2,12 +2,22 @@ import React, { useEffect } from 'react'
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from 'ethers';
 import Web3Modal from "web3modal";
+import styled from 'styled-components';
 import { Contract, providers, utils } from "ethers";
 import { useLazyQuery } from '@apollo/client'
 import { GET_PROFILES } from '../utils/queries'
 import LensHub from '../abi/LensHub.json'
 import { useWallet } from '../utils/wallet'
 import Login from './Login'
+import Button from './Button'
+import Logo from '../assets/logo.png'
+
+const LoginContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
 
 function Wallet({ setProfile = () => {}, ...props }) {
 const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
@@ -88,13 +98,23 @@ const { wallet, setWallet, setLensHub, authToken, setProvider } = useWallet()
   // }, [])
   
   return (
-    
-    <div>
-    { wallet.signer ? 
-    <Login/> : 
-    <button onClick={connect} >Connect Wallet</button>
-    }
-  </div>
+    <LoginContainer>
+      {
+        (!authToken || !wallet.signer) && <>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <img height="180px" src={Logo}/>
+          <br/>
+        </>
+      }
+      { wallet.signer ? 
+        <Login/> : 
+        <Button onClick={connect} >Connect Wallet</Button>
+      }
+    </LoginContainer>
   );
 }
 

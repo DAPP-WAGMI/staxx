@@ -7,9 +7,8 @@ import Curate from '../components/Curate'
 import Compose from '../components/Compose'
 import { RoundedButton } from '../components/Button'
 import Card from '../components/Card'
-import { GET_TIMELINE, SEARCH } from '../utils/queries'
+import { GET_TIMELINE, SEARCH, GET_PUBLICATIONS } from '../utils/queries'
 import Gradient from '../assets/gradient.png'
-
 
 const Container = styled.div`
     border-radius: 8px;`
@@ -18,7 +17,8 @@ const StaxxPreview = styled(Card)`
     color: white;
     background: url(${Gradient});
     background-size: cover;
-    margin-bottom: 1.8em;
+    background-attachment: fixed;
+    margin-bottom: 2.4em;
     span {
         font-weight: 600;
         font-size: 1.22em;
@@ -26,11 +26,18 @@ const StaxxPreview = styled(Card)`
     position: relative;
 `
     
-const InnerBox = styled.div``
-
-const StyledImage = styled.img`
-
+const StyledImg = styled.img`
+    height: 180px;
+    margin-bottom: 1em;
 `
+
+const Scrollarea = styled.div`
+    display: flex;
+    gap: 0.9em;
+    overflow: scroll;
+`
+
+const InnerBox = styled.div``
 
 const Buttons = styled.div`
     position: absolute;
@@ -39,6 +46,45 @@ const Buttons = styled.div`
     display: flex;
     gap: 0.6em;
 `
+
+const Staxx = ({ pub }) => {
+    const [comments, setComments] = useState([])
+    const [getPublications, publicationsData] = useLazyQuery(GET_PUBLICATIONS)
+
+    useEffect(() => {
+        getPublications({
+            variables: {
+                request: {
+                    commentsOf: pub.id
+                },
+            },
+        });
+    }, [])
+    
+    useEffect(() => {
+        if (!publicationsData.data) return;
+
+        setComments(publicationsData.data.publications.items);
+
+    }, [publicationsData.data]);
+
+    return <StaxxPreview>
+        <span>{pub.metadata.content?.replace('#staxx', '')}</span>
+        {pub.profile.handle}
+        <br/>
+        <br/>
+        <Scrollarea>
+        {comments.map((post) => {
+                const src = post.metadata.media[0].original?.url?.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')
+                return <StyledImg src={src} key={post.id} />;
+            })}
+        </Scrollarea>
+        <Buttons>
+            <RoundedButton>save</RoundedButton>
+            <RoundedButton>reply</RoundedButton>
+        </Buttons>
+    </StaxxPreview>
+}
 
 function Home({ profile, ...props }) {
     const { wallet, provider } = useWallet()
@@ -91,14 +137,7 @@ function Home({ profile, ...props }) {
                 // .filter(pub => pub.collectedBy)
                 .map(pub => {
                     return <Link key={pub.id} to={`/board/${pub.id}`}>
-                        <StaxxPreview>
-                            <span>{pub.metadata.content?.replace('#staxx', '')}</span>
-                            {pub.profile.handle}
-                            <Buttons>
-                                <RoundedButton>save</RoundedButton>
-                                <RoundedButton>reply</RoundedButton>
-                            </Buttons>
-                        </StaxxPreview>
+                        <Staxx pub={pub}/>
                     </Link>
             })
         }

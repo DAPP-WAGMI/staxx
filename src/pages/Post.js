@@ -41,7 +41,7 @@ function Post({ profileId, profileName }) {
     const [isCommunity, setIsCommunity] = useState(false)
 
     const [getPublication, publicationData] = useLazyQuery(GET_PUBLICATION)
-    const [getPublications, publicationsData] = useLazyQuery(GET_PUBLICATIONS);
+    const [getPublications, publicationsData] = useLazyQuery(GET_PUBLICATIONS)
 
     useEffect(() => {
         getPublication({
@@ -97,7 +97,7 @@ function Post({ profileId, profileName }) {
             <br/>
             {comments.map((post) => {
                 const src = post.metadata.media[0].original?.url?.replace('ipfs://', 'https://cloudflare-ipfs.com/ipfs/')
-                return <StyledImg src={src} key={post.id} post={post} profileId={profileId} />;
+                return <StyledImg src={src} key={post.id} />;
             })}
         </StyledCard>
     </>
